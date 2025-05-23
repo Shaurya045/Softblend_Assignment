@@ -1,26 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Context } from "../context/Context";
-import axios from "axios";
 import ListProject from "../components/ListProject";
 
 function Projects() {
   const { theme } = useContext(Context);
   const bgColor = theme === "light" ? "bg-black" : "bg-white";
-
-  const [data, setData] = useState([]);
-
-  const loadData = async () => {
-    try {
-      const response = await axios.get("https://dev.to/api/articles");
-      setData(response.data);
-    } catch (err) {
-      console.error("Error fetching articles:", err);
-    }
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   return (
     <div>
@@ -34,7 +18,7 @@ function Projects() {
         ></div>
       </div>
 
-      <ListProject data={data} />
+      <ListProject />
     </div>
   );
 }

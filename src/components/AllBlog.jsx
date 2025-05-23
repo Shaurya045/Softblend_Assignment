@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
 import { FiArrowUpRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { Context } from "../context/Context";
 
-function AllBlog({ data }) {
+function AllBlog() {
+  const { data } = useContext(Context);
+
   const [currentPage, setCurrentPage] = useState(1);
   const blogsPerPage = 6;
   const totalPages = Math.ceil(data.length / blogsPerPage);
@@ -25,15 +28,15 @@ function AllBlog({ data }) {
       ai: "#FCE7F3",
       api: "#DBEAFE",
       coding: "#E0E7FF",
-      frameworks: "#FEF3C7",
+      management: "#FDF2FA",
       design: "#DBEAFE",
-      "Software Development": "#DCFCE7",
-      tools: "#FEF3C7",
-      saaS: "#FEE2E2",
-      podcasts: "#F3E8FF",
-      "Customer Success": "#E0F2FE",
+      discuss: "#71EA8B",
+      motivation: "#FEF3C7",
+      gamedev: "#FEE2E2",
+      leadership: "#F3E8FF",
+      career: "#E0F2FE",
     };
-    return tagMap[tag] || "#E0E7FF";
+    return tagMap[tag] || "#F9F5FF";
   };
 
   const getTagTextColor = (tag) => {
@@ -43,16 +46,20 @@ function AllBlog({ data }) {
       ai: "#DB2777",
       api: "#2563EB",
       coding: "#4F46E5",
-      frameworks: "#D97706",
+      management: "#C11574",
       design: "#2563EB",
-      "Software Development": "#16A34A",
-      tools: "#D97706",
-      saaS: "#DC2626",
-      podcasts: "#9333EA",
-      "Customer Success": "#0891B2",
+      discuss: "#FFFFFF",
+      motivation: "#D97706",
+      gamedev: "#DC2626",
+      leadership: "#9333EA",
+      career: "#0891B2",
     };
-    return tagMap[tag] || "#4F46E5";
+    return tagMap[tag] || "#6941C6";
   };
+
+  if (!data || data.length === 0) {
+    return <div>Loading recent posts...</div>;
+  }
 
   return (
     <div className="flex flex-col gap-[30px] mb-[30px]">
@@ -73,7 +80,11 @@ function AllBlog({ data }) {
               {item.readable_publish_date}
             </p>
 
-            <Link to={item.url} target="blank" className="flex justify-between items-start mb-2">
+            <Link
+              to={item.url}
+              target="blank"
+              className="flex justify-between items-start mb-2"
+            >
               <h2 className="text-xl font-bold pr-2">{item.title}</h2>
               <FiArrowUpRight className="flex-shrink-0 h-5 w-5" />
             </Link>
@@ -110,7 +121,9 @@ function AllBlog({ data }) {
           onClick={goToPrevPage}
           disabled={currentPage === 1}
           className={`flex flex-row justify-center items-center gap-2 ${
-            currentPage === 1 ? "text-gray-600 cursor-not-allowed" : "cursor-pointer"
+            currentPage === 1
+              ? "text-gray-600 cursor-not-allowed"
+              : "cursor-pointer"
           }`}
         >
           <FaArrowLeft className="h-4 w-4" />
@@ -118,7 +131,6 @@ function AllBlog({ data }) {
         </button>
 
         <div className="flex items-center gap-2">
-          {/* First page is always shown */}
           <button
             onClick={() => paginate(1)}
             className={`w-8 h-8 flex items-center justify-center rounded-md ${
@@ -130,20 +142,16 @@ function AllBlog({ data }) {
             1
           </button>
 
-          {/* Show ellipsis after page 1 if current page is far from the start */}
           {currentPage > 3 && totalPages > 5 && (
             <span className="text-gray-400">...</span>
           )}
 
-          {/* Generate page numbers around the current page */}
           {Array.from({ length: totalPages }, (_, i) => i + 1)
             .filter((num) => {
-              // Show pages around current page
               if (totalPages <= 5) {
                 return num > 1 && num < totalPages;
               }
 
-              // For many pages, show a window around current page
               if (currentPage <= 3) {
                 return num > 1 && num <= 3;
               } else if (currentPage >= totalPages - 2) {
@@ -171,12 +179,10 @@ function AllBlog({ data }) {
               </button>
             ))}
 
-          {/* Show ellipsis before last page if current page is far from the end */}
           {currentPage < totalPages - 2 && totalPages > 5 && (
             <span className="text-gray-400">...</span>
           )}
 
-          {/* Last page is always shown if there's more than one page */}
           {totalPages > 1 && (
             <button
               onClick={() => paginate(totalPages)}
@@ -195,7 +201,9 @@ function AllBlog({ data }) {
           onClick={goToNextPage}
           disabled={currentPage === totalPages}
           className={`flex flex-row justify-center items-center gap-2 ${
-            currentPage === totalPages ? "text-gray-600 cursor-not-allowed" : "cursor-pointer"
+            currentPage === totalPages
+              ? "text-gray-600 cursor-not-allowed"
+              : "cursor-pointer"
           }`}
         >
           <p>Next</p>

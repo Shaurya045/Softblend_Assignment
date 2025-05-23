@@ -11,15 +11,19 @@ function Navbar({ ismobilMenu, setIsMobileMenu }) {
   return (
     <div className={`${ismobilMenu ? "" : "py-[10px]"}`}>
       <div className="flex justify-between items-center">
-        {ismobilMenu ? "" : <h1>Shaurya Pratap Singh</h1>}
+        {ismobilMenu ? (
+          ""
+        ) : (
+          <h1 className="font-bold text-[20px]">Shaurya Pratap Singh</h1>
+        )}
         <button
           className="block md:hidden"
           onClick={() => setIsMobileMenu(true)}
         >
-          {ismobilMenu ? "" : <RxHamburgerMenu />}
+          {ismobilMenu ? "" : <RxHamburgerMenu size={20} />}
         </button>
-        <div className="hidden md:flex items-center space-x-4">
-          <div className="flex space-x-2">
+        <div className="hidden md:flex items-center gap-2">
+          <div className="flex gap-2">
             <NavLink
               to="/"
               className={({ isActive }) =>
@@ -89,10 +93,13 @@ function Navbar({ ismobilMenu, setIsMobileMenu }) {
         </div>
 
         {ismobilMenu && (
-          <div className="relative flex flex-col items-center justify-center h-screen w-full md:hidden space-x-4">
+          <div className="relative flex flex-col items-center justify-center h-screen w-full md:hidden ">
             <div className="flex flex-col items-center justify-center gap-[10px] text-[18px]">
-              <h1 className="mb-[30px]">Shaurya Pratap Singh</h1>
+              <h1 className="font-bold text-[20px] mb-[30px]">
+                Shaurya Pratap Singh
+              </h1>
               <NavLink
+                onClick={() => setIsMobileMenu(false)}
                 to="/"
                 className={({ isActive }) =>
                   `${
@@ -109,6 +116,7 @@ function Navbar({ ismobilMenu, setIsMobileMenu }) {
                 Blog
               </NavLink>
               <NavLink
+                onClick={() => setIsMobileMenu(false)}
                 to="/projects"
                 className={({ isActive }) =>
                   `${
@@ -125,6 +133,7 @@ function Navbar({ ismobilMenu, setIsMobileMenu }) {
                 Projects
               </NavLink>
               <NavLink
+                onClick={() => setIsMobileMenu(false)}
                 to="/about"
                 className={({ isActive }) =>
                   `${
@@ -141,6 +150,7 @@ function Navbar({ ismobilMenu, setIsMobileMenu }) {
                 About
               </NavLink>
               <NavLink
+                onClick={() => setIsMobileMenu(false)}
                 to="/newsletter"
                 className={({ isActive }) =>
                   `${
